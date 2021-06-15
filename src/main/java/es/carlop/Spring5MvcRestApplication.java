@@ -1,4 +1,4 @@
-package guru.springfamework;
+package es.carlop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

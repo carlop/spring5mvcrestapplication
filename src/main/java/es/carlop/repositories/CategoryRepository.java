@@ -1,6 +1,6 @@
-package guru.springfamework.repositories;
+package es.carlop.repositories;
 
-import guru.springfamework.domain.Category;
+import es.carlop.domain.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

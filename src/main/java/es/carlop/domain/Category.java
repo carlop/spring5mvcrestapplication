@@ -1,4 +1,4 @@
-package guru.springfamework.domain;
+package es.carlop.domain;
 
 import lombok.Data;
 
