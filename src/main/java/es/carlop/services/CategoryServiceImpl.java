@@ -3,10 +3,12 @@ package es.carlop.services;
 import es.carlop.api.v1.mapper.CategoryMapper;
 import es.carlop.api.v1.model.CategoryDTO;
 import es.carlop.repositories.CategoryRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryMapper categoryMapper;
