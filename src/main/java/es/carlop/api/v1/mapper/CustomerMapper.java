@@ -14,6 +14,8 @@ public interface CustomerMapper {
 
     CustomerDTO customerToCustomerDTO(Customer customer);
 
+    Customer customerDTOToCustomer(CustomerDTO customerDTO);
+
     @AfterMapping
     default void setUrl(Customer customer, @MappingTarget CustomerDTO customerDTO) {
         customerDTO.setCustomerUrl("/api/v1/customers/" + customer.getId());
