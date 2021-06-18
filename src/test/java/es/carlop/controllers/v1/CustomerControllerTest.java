@@ -19,6 +19,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,13 +27,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class CustomerControllerTest {
 
-    public static final Long FC_ID = 1L;
     public static final String FC_FIRST_NAME = "Jimmy";
     public static final String FC_LAST_NAME = "McGill";
 
-    public static final Long SC_ID = 2L;
     public static final String SC_FIRST_NAME = "Kim";
     public static final String SC_LAST_NAME = "Wexler";
+
+    public static final String CUSTOMER_1_API_URI = "/api/v1/customers/1";
 
     @Mock
     CustomerService customerService;
@@ -77,7 +78,7 @@ public class CustomerControllerTest {
 
         when(customerService.getCustomerById(anyLong())).thenReturn(customer);
 
-        mockMvc.perform(get("/api/v1/customers/1")
+        mockMvc.perform(get(CUSTOMER_1_API_URI)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo(FC_FIRST_NAME)))
@@ -96,7 +97,7 @@ public class CustomerControllerTest {
         CustomerDTO returnDTO = new CustomerDTO();
         returnDTO.setFirstName(customerDTO.getFirstName());
         returnDTO.setLastName(customerDTO.getLastName());
-        returnDTO.setCustomerUrl("/api/v1/customers/1");
+        returnDTO.setCustomerUrl(CUSTOMER_1_API_URI);
 
         when(customerService.createNewCustomer(customerDTO)).thenReturn(returnDTO);
 
@@ -105,7 +106,7 @@ public class CustomerControllerTest {
                 .content(asJsonString(customerDTO)))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.firstName", equalTo(FC_FIRST_NAME)))
-            .andExpect(jsonPath("$.customer_url", equalTo("/api/v1/customers/1")));
+            .andExpect(jsonPath("$.customer_url", equalTo(CUSTOMER_1_API_URI)));
     }
 
     @Test
@@ -119,18 +120,18 @@ public class CustomerControllerTest {
         CustomerDTO returnDTO = new CustomerDTO();
         returnDTO.setFirstName(customerDTO.getFirstName());
         returnDTO.setLastName(customerDTO.getLastName());
-        returnDTO.setCustomerUrl("/api/v1/customers/1");
+        returnDTO.setCustomerUrl(CUSTOMER_1_API_URI);
 
         when(customerService.saveCustomerByDTO(anyLong(), any(CustomerDTO.class))).thenReturn(returnDTO);
 
         //when/then
-        mockMvc.perform(put("/api/v1/customers/1")
+        mockMvc.perform(put(CUSTOMER_1_API_URI)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(customerDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo(FC_FIRST_NAME)))
                 .andExpect(jsonPath("$.lastName", equalTo(FC_LAST_NAME)))
-                .andExpect(jsonPath("$.customer_url", equalTo("/api/v1/customers/1")));
+                .andExpect(jsonPath("$.customer_url", equalTo(CUSTOMER_1_API_URI)));
     }
 
     @Test
@@ -143,18 +144,27 @@ public class CustomerControllerTest {
         CustomerDTO returnDTO = new CustomerDTO();
         returnDTO.setFirstName(customer.getFirstName());
         returnDTO.setLastName(SC_LAST_NAME);
-        returnDTO.setCustomerUrl("/api/v1/customers/1");
+        returnDTO.setCustomerUrl(CUSTOMER_1_API_URI);
 
         when(customerService.patchCustomer(anyLong(), any(CustomerDTO.class))).thenReturn(returnDTO);
 
-        mockMvc.perform(patch("/api/v1/customers/1")
+        mockMvc.perform(patch(CUSTOMER_1_API_URI)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(customer)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo(FC_FIRST_NAME)))
                 .andExpect(jsonPath("$.lastName", equalTo(SC_LAST_NAME)))
-                .andExpect(jsonPath("$.customer_url", equalTo("/api/v1/customers/1")));
+                .andExpect(jsonPath("$.customer_url", equalTo(CUSTOMER_1_API_URI)));
 
+    }
+
+    @Test
+    public void testDeleteCustomer() throws Exception {
+        mockMvc.perform(delete(CUSTOMER_1_API_URI)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(customerService).deleteCustomerById(anyLong());
     }
 
 }
