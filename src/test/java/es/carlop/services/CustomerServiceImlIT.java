@@ -6,6 +6,7 @@ import es.carlop.bootstrap.Bootstrap;
 import es.carlop.domain.Customer;
 import es.carlop.repositories.CategoryRepository;
 import es.carlop.repositories.CustomerRepository;
+import es.carlop.repositories.VendorRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +32,9 @@ public class CustomerServiceImlIT {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Autowired
+    VendorRepository vendorRepository;
+
     CustomerService customerService;
 
     @Before
@@ -39,7 +43,7 @@ public class CustomerServiceImlIT {
         System.out.println(customerRepository.findAll().size());
 
         //setup data for testing
-        Bootstrap bootstrap = new Bootstrap(categoryRepository, customerRepository);
+        Bootstrap bootstrap = new Bootstrap(categoryRepository, customerRepository, vendorRepository);
         bootstrap.run(); //load data
 
         customerService = new CustomerServiceImpl(CustomerMapper.INSTANCE, customerRepository);
