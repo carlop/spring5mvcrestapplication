@@ -4,6 +4,7 @@ import es.carlop.api.v1.mapper.CustomerMapper;
 import es.carlop.api.v1.model.CustomerDTO;
 import es.carlop.BaseURLs;
 import es.carlop.domain.Customer;
+import es.carlop.exceptions.ResourceNotFoundException;
 import es.carlop.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDTO getCustomerById(Long id) {
         return customerRepository.findById(id)
                 .map(customerMapper::customerToCustomerDTO)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.setLastName(customerDTO.getLastName());
             }
             return customerMapper.customerToCustomerDTO(customerRepository.save(customer));
-        }).orElseThrow(RuntimeException::new);
+        }).orElseThrow(ResourceNotFoundException::new);
     }
 
     private CustomerDTO saveAndReturnDTO(Customer customer) {

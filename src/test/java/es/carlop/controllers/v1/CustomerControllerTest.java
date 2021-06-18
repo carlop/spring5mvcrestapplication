@@ -2,6 +2,7 @@ package es.carlop.controllers.v1;
 
 import es.carlop.BaseURLs;
 import es.carlop.api.v1.model.CustomerDTO;
+import es.carlop.exceptions.ResourceNotFoundException;
 import es.carlop.services.CustomerService;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,8 +19,7 @@ import java.util.List;
 import static es.carlop.controllers.v1.AbstractRestControllerTest.asJsonString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -49,7 +49,9 @@ public class CustomerControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(customerController)
+                .setControllerAdvice(new RestResponseEntityExceptionHandler())
+                .build();
     }
 
     @Test
@@ -169,4 +171,12 @@ public class CustomerControllerTest {
         verify(customerService).deleteCustomerById(anyLong());
     }
 
+    @Test
+    public void testCustomerNotFound() throws Exception {
+        when(customerService.getCustomerById(anyLong())).thenThrow(ResourceNotFoundException.class);
+
+        mockMvc.perform(get(BaseURLs.CUSTOMERS_URL + 10L)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 }
