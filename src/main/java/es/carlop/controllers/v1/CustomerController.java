@@ -1,5 +1,6 @@
 package es.carlop.controllers.v1;
 
+import es.carlop.BaseURLs;
 import es.carlop.api.v1.model.CustomerDTO;
 import es.carlop.api.v1.model.CustomersListDTO;
 import es.carlop.services.CustomerService;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/api/v1/customers/")
+@RequestMapping(BaseURLs.CUSTOMERS_URL)
 public class CustomerController {
 
     private final CustomerService customerService;

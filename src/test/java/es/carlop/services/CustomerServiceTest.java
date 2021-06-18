@@ -2,6 +2,7 @@ package es.carlop.services;
 
 import es.carlop.api.v1.mapper.CustomerMapper;
 import es.carlop.api.v1.model.CustomerDTO;
+import es.carlop.BaseURLs;
 import es.carlop.domain.Customer;
 import es.carlop.repositories.CustomerRepository;
 import org.junit.Before;
@@ -22,6 +23,7 @@ public class CustomerServiceTest {
     private static final Long ID = 1L;
     private static final String FIRST_NAME = "Jimmy";
     private static final String LAST_NAME = "McGill";
+    private static final String CUSTOMERS_1_API_URI = BaseURLs.CUSTOMERS_URL + "1";
     CustomerService customerService;
 
     @Mock
@@ -88,7 +90,7 @@ public class CustomerServiceTest {
 
         //then
         assertEquals(customerDTO.getFirstName(), savedDTO.getFirstName());
-        assertEquals("/api/v1/customers/1", savedDTO.getCustomerUrl());
+        assertEquals(CUSTOMERS_1_API_URI, savedDTO.getCustomerUrl());
     }
 
     @Test

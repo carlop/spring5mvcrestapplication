@@ -1,5 +1,6 @@
 package es.carlop.controllers.v1;
 
+import es.carlop.BaseURLs;
 import es.carlop.api.v1.model.CategoryDTO;
 import es.carlop.api.v1.model.CategoryListDTO;
 import es.carlop.services.CategoryService;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/api/v1/categories/")
+@RequestMapping(BaseURLs.CATEGORIES_URL)
 public class CategoryController {
 
     private final CategoryService categoryService;

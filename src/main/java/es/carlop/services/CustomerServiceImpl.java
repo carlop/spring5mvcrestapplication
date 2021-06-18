@@ -2,6 +2,7 @@ package es.carlop.services;
 
 import es.carlop.api.v1.mapper.CustomerMapper;
 import es.carlop.api.v1.model.CustomerDTO;
+import es.carlop.BaseURLs;
 import es.carlop.domain.Customer;
 import es.carlop.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -69,7 +70,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer savedCustomer = customerRepository.save(customer);
 
         CustomerDTO returnDTO = customerMapper.customerToCustomerDTO(savedCustomer);
-        returnDTO.setCustomerUrl("/api/v1/customers/" + savedCustomer.getId());
+        returnDTO.setCustomerUrl(BaseURLs.CUSTOMERS_URL + savedCustomer.getId());
 
         return returnDTO;
     }

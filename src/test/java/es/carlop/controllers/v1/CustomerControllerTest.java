@@ -1,5 +1,6 @@
 package es.carlop.controllers.v1;
 
+import es.carlop.BaseURLs;
 import es.carlop.api.v1.model.CustomerDTO;
 import es.carlop.services.CustomerService;
 import org.junit.Before;
@@ -33,7 +34,8 @@ public class CustomerControllerTest {
     public static final String SC_FIRST_NAME = "Kim";
     public static final String SC_LAST_NAME = "Wexler";
 
-    public static final String CUSTOMER_1_API_URI = "/api/v1/customers/1";
+    public static final String CUSTOMER_1_API_URI = BaseURLs.CUSTOMERS_URL + "1";
+
 
     @Mock
     CustomerService customerService;
@@ -64,7 +66,7 @@ public class CustomerControllerTest {
 
         when(customerService.getAllCustomers()).thenReturn(customers);
 
-        mockMvc.perform(get("/api/v1/customers/")
+        mockMvc.perform(get(BaseURLs.CUSTOMERS_URL)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.customers", hasSize(2)));
@@ -101,7 +103,7 @@ public class CustomerControllerTest {
 
         when(customerService.createNewCustomer(customerDTO)).thenReturn(returnDTO);
 
-        mockMvc.perform(post("/api/v1/customers/")
+        mockMvc.perform(post(BaseURLs.CUSTOMERS_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(customerDTO)))
             .andExpect(status().isCreated())
