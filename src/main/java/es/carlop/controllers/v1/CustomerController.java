@@ -4,9 +4,12 @@ import es.carlop.BaseURLs;
 import es.carlop.api.v1.model.CustomerDTO;
 import es.carlop.api.v1.model.CustomersListDTO;
 import es.carlop.services.CustomerService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "customer-controller", description = "This is the Customer controller")
 @RestController
 @RequestMapping(BaseURLs.CUSTOMERS_URL)
 public class CustomerController {
@@ -17,6 +20,8 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+    @Operation(summary = "This will get a list of customers.",
+            description = "These are some notes about the API.")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CustomersListDTO getAllCustomers() {
